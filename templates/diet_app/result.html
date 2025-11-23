@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+
+{% block title %}Your Diet Plan - Smart Diet System{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Health Metrics Sidebar -->
+    <div class="col-lg-4 mb-4">
+        <div class="card sticky-top" style="top: 100px;">
+            <div class="card-body">
+                <h4 class="mb-4">
+                    <i class="fas fa-chart-pie text-primary"></i> Your Health Metrics
+                </h4>
+                
+                <!-- BMI Box -->
+                <div class="metric-box mb-3">
+                    <h3>{{ result.bmi }}</h3>
+                    <p class="mb-0">Body Mass Index</p>
+                </div>
+                
+                <!-- Category Badge -->
+                <div class="text-center mb-3">
+                    <span class="badge-category {{ result.category|lower }}">
+                        {{ result.category }}
+                    </span>
+                </div>
+                
+                <!-- Diet Type -->
+                <div class="alert alert-light text-center mb-3">
+                    <strong>Diet Type:</strong><br>
+                    <span class="diet-badge diet-{{ result.diet_type }} mt-2 d-inline-block">
+                        {% if result.diet_type == 'veg' %}
+                            <i class="fas fa-leaf"></i> Vegetarian
+                        {% elif result.diet_type == 'nonveg' %}
+                            <i class="fas fa-drumstick-bite"></i> Non-Vegetarian
+                        {% else %}
+                            <i class="fas fa-seedling"></i> Vegan
+                        {% endif %}
+                    </span>
+                </div>
+                
+                <hr>
+                
+                <!-- TDEE -->
+                <div class="d-flex justify-content-between align-items-center mb-3 p-3 bg-light rounded">
+                    <div>
+                        <small class="text-muted d-block">Base Calories (TDEE)</small>
+                        <strong class="fs-4 text-primary">{{ result.tdee }}</strong>
+                        <small class="text-muted">kcal/day</small>
+                    </div>
+                    <i class="fas fa-fire fa-2x text-warning"></i>
+                </div>
+                
+                <!-- Recommended Calories -->
+                <div class="d-flex justify-content-between align-items-center p-3 bg-success bg-opacity-10 rounded">
+                    <div>
+                        <small class="text-muted d-block">Recommended Daily</small>
+                        <strong class="fs-4 text-success">{{ result.recommended_calories }}</strong>
+                        <small class="text-muted">kcal/day</small>
+                    </div>
+                    <i class="fas fa-bullseye fa-2x text-success"></i>
+                </div>
+                
+                <hr class="my-4">
+                
+                <!-- Action Buttons -->
+                <div class="d-grid gap-2">
+                    <a href="{% url 'calculate_diet' %}" class="btn btn-outline-primary">
+                        <i class="fas fa-redo"></i> Calculate Again
+                    </a>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'dashboard' %}" class="btn btn-primary">
+                            <i class="fas fa-tachometer-alt"></i> Go to Dashboard
+                        </a>
+                    {% else %}
+                        <a href="{% url 'register' %}" class="btn btn-success">
+                            <i class="fas fa-save"></i> Save This Plan
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Diet Plan Main Content -->
+    <div class="col-lg-8">
+        <!-- Diet Plan Card -->
+        <div class="card mb-4">
+            <div class="card-body p-4">
+                <h3 class="mb-4">
+                    <i class="fas fa-utensils text-warning"></i> 
+                    {{ result.diet_plan.title }}
+                </h3>
+                
+                <!-- Daily Meal Plan -->
+                <h5 class="mt-4 mb-3 fw-bold">
+                    <i class="fas fa-clock"></i> Your Daily Meal Plan:
+                </h5>
+                
+                <div class="meals-container">
+                    {% for meal in result.diet_plan.meals %}
+                    <div class="meal-card">
+                        <div class="d-flex align-items-start">
+                            <div class="me-3">
+                                <div class="rounded-circle bg-warning bg-opacity-25 p-2" style="width: 40px; height: 40px;">
+                                    <i class="fas fa-utensils text-warning"></i>
+                                </div>
+                            </div>
+                            <div class="flex-grow-1">
+                                {{ meal }}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <!-- Important Tips -->
+                <h5 class="mt-5 mb-3 fw-bold">
+                    <i class="fas fa-lightbulb"></i> Important Tips for Success:
+                </h5>
+                
+                <div class="tips-container">
+                    {% for tip in result.diet_plan.tips %}
+                    <div class="tip-card">
+                        <div class="d-flex align-items-start">
+                            <div class="me-3">
+                                <i class="fas fa-check-circle text-primary fa-lg"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <strong>{{ tip }}</strong>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Additional Info Card -->
+        <div class="card border-warning">
+            <div class="card-body">
+                <h5 class="text-warning mb-3">
+                    <i class="fas fa-exclamation-triangle"></i> Important Disclaimer
+                </h5>
+                <p class="mb-0">
+                    This is a general recommendation based on your BMI and activity level. 
+                    For personalized medical advice, please consult with a certified 
+                    nutritionist or healthcare professional. Individual needs may vary based 
+                    on medical conditions, medications, and other factors.
+                </p>
+            </div>
+        </div>
+        
+        <!-- Share & Save Actions -->
+        <div class="text-center mt-4">
+            {% if not user.is_authenticated %}
+            <div class="alert alert-info">
+                <i class="fas fa-star"></i> 
+                <strong>Want to track your progress?</strong>
+                <a href="{% url 'register' %}" class="alert-link">Create a free account</a> 
+                to save this plan and log your weight over time!
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+.meals-container .meal-card:last-child {
+    margin-bottom: 0;
+}
+
+.tips-container .tip-card:last-child {
+    margin-bottom: 0;
+}
+</style>
+{% endblock %}

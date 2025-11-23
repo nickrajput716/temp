@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+
+{% block title %}Calculate Diet Plan - Smart Diet System{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-body p-5">
+                <div class="text-center mb-4">
+                    <i class="fas fa-calculator fa-4x text-primary mb-3"></i>
+                    <h2 class="fw-bold">Calculate Your Personalized Diet Plan</h2>
+                    <p class="text-muted">Fill in your details to get AI-powered diet recommendations</p>
+                </div>
+                
+                <form method="POST">
+                    {% csrf_token %}
+                    
+                    <div class="row g-4">
+                        <!-- Age and Gender -->
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">
+                                <i class="fas fa-birthday-cake"></i> Age *
+                            </label>
+                            <input type="number" name="age" class="form-control form-control-lg" 
+                                   required min="10" max="100" placeholder="25">
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">
+                                <i class="fas fa-venus-mars"></i> Gender *
+                            </label>
+                            <select name="gender" class="form-control form-control-lg" required>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Height and Weight -->
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">
+                                <i class="fas fa-ruler-vertical"></i> Height (cm) *
+                            </label>
+                            <input type="number" name="height" class="form-control form-control-lg" 
+                                   required min="100" max="250" step="0.1" placeholder="170">
+                            <small class="text-muted">Enter your height in centimeters</small>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">
+                                <i class="fas fa-weight"></i> Weight (kg) *
+                            </label>
+                            <input type="number" name="weight" class="form-control form-control-lg" 
+                                   required min="30" max="200" step="0.1" placeholder="70">
+                            <small class="text-muted">Enter your weight in kilograms</small>
+                        </div>
+                        
+                        <!-- Activity Level -->
+                        <div class="col-12">
+                            <label class="form-label fw-semibold">
+                                <i class="fas fa-running"></i> Activity Level *
+                            </label>
+                            <select name="activity_level" class="form-control form-control-lg" required>
+                                <option value="sedentary">🪑 Sedentary (little or no exercise)</option>
+                                <option value="light">🚶 Lightly Active (exercise 1-3 days/week)</option>
+                                <option value="moderate" selected>🏃 Moderately Active (exercise 3-5 days/week)</option>
+                                <option value="veryActive">💪 Very Active (exercise 6-7 days/week)</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Goal -->
+                        <div class="col-12">
+                            <label class="form-label fw-semibold">
+                                <i class="fas fa-bullseye"></i> Your Goal *
+                            </label>
+                            <select name="goal" class="form-control form-control-lg" required>
+                                <option value="lose">📉 Lose Weight</option>
+                                <option value="maintain" selected>⚖️ Maintain Weight</option>
+                                <option value="gain">📈 Gain Weight</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Diet Preference -->
+                        <div class="col-12">
+                            <label class="form-label fw-semibold mb-3">
+                                <i class="fas fa-utensils"></i> Diet Preference *
+                            </label>
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <input type="radio" class="btn-check" name="diet_type" id="veg" value="veg" checked>
+                                    <label class="btn btn-outline-success w-100 py-3" for="veg">
+                                        <i class="fas fa-leaf fa-2x mb-2"></i><br>
+                                        <strong>Vegetarian</strong>
+                                    </label>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <input type="radio" class="btn-check" name="diet_type" id="nonveg" value="nonveg">
+                                    <label class="btn btn-outline-danger w-100 py-3" for="nonveg">
+                                        <i class="fas fa-drumstick-bite fa-2x mb-2"></i><br>
+                                        <strong>Non-Vegetarian</strong>
+                                    </label>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <input type="radio" class="btn-check" name="diet_type" id="vegan" value="vegan">
+                                    <label class="btn btn-outline-primary w-100 py-3" for="vegan">
+                                        <i class="fas fa-seedling fa-2x mb-2"></i><br>
+                                        <strong>Vegan</strong>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Submit Button -->
+                        <div class="col-12 mt-4">
+                            <button type="submit" class="btn btn-primary w-100 btn-lg py-3">
+                                <i class="fas fa-magic"></i> Generate My Personalized Diet Plan
+                            </button>
+                        </div>
+                        
+                        {% if not user.is_authenticated %}
+                        <div class="col-12">
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle"></i>
+                                <strong>Pro Tip:</strong> 
+                                <a href="{% url 'register' %}" class="alert-link">Register for free</a> 
+                                to save your diet plans and track progress!
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Info Box -->
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5 class="fw-bold mb-3"><i class="fas fa-info-circle text-primary"></i> What You'll Get:</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><i class="fas fa-check text-success"></i> Your BMI and health category</li>
+                    <li class="mb-2"><i class="fas fa-check text-success"></i> Daily calorie requirements (TDEE)</li>
+                    <li class="mb-2"><i class="fas fa-check text-success"></i> 5 meals per day plan</li>
+                    <li class="mb-2"><i class="fas fa-check text-success"></i> Personalized nutrition tips</li>
+                    <li class="mb-2"><i class="fas fa-check text-success"></i> ML-powered recommendations</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

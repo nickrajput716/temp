@@ -1,0 +1,202 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - Smart Diet Recommendation System{% endblock %}
+
+{% block content %}
+<div class="row align-items-center min-vh-75">
+    <div class="col-lg-6 text-white mb-5 mb-lg-0">
+        <h1 class="display-3 fw-bold mb-4">
+            Smart Diet<br>
+            Recommendation<br>
+            System
+        </h1>
+        <p class="lead mb-4">
+            <i class="fas fa-check-circle"></i> AI-Powered Personalized Nutrition Plans<br>
+            <i class="fas fa-check-circle"></i> Veg / Non-Veg / Vegan Options<br>
+            <i class="fas fa-check-circle"></i> Based on Real Kaggle Datasets<br>
+            <i class="fas fa-check-circle"></i> BMI & TDEE Calculations
+        </p>
+        <div class="d-flex gap-3">
+            <a href="{% url 'calculate_diet' %}" class="btn btn-primary btn-lg">
+                <i class="fas fa-calculator"></i> Get Started
+            </a>
+            {% if not user.is_authenticated %}
+            <a href="{% url 'register' %}" class="btn btn-outline-light btn-lg">
+                <i class="fas fa-user-plus"></i> Sign Up Free
+            </a>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body p-5">
+                <div class="text-center mb-4">
+                    <i class="fas fa-apple-alt fa-4x text-primary mb-3"></i>
+                    <h2 class="fw-bold">Quick Calculator</h2>
+                    <p class="text-muted">Get instant diet recommendations</p>
+                </div>
+                
+                <form action="{% url 'calculate_diet' %}" method="get">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Age</label>
+                            <input type="number" class="form-control" name="age" required min="10" max="100" placeholder="25">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Gender</label>
+                            <select class="form-control" name="gender" required>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Height (cm)</label>
+                            <input type="number" class="form-control" name="height" required min="100" placeholder="170">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Weight (kg)</label>
+                            <input type="number" class="form-control" name="weight" required min="30" placeholder="70">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-semibold">Goal</label>
+                            <select class="form-control" name="goal" required>
+                                <option value="lose">Lose Weight</option>
+                                <option value="maintain">Maintain Weight</option>
+                                <option value="gain">Gain Weight</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-semibold">Diet Preference</label>
+                            <div class="d-flex gap-3 justify-content-center">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="diet_type" value="veg" id="veg" checked>
+                                    <label class="form-check-label" for="veg">
+                                        <i class="fas fa-leaf text-success"></i> Veg
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="diet_type" value="nonveg" id="nonveg">
+                                    <label class="form-check-label" for="nonveg">
+                                        <i class="fas fa-drumstick-bite text-danger"></i> Non-Veg
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="diet_type" value="vegan" id="vegan">
+                                    <label class="form-check-label" for="vegan">
+                                        <i class="fas fa-seedling text-success"></i> Vegan
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary w-100 btn-lg">
+                                <i class="fas fa-magic"></i> Generate Diet Plan
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<div class="row mt-5 pt-5">
+    <div class="col-12 text-center text-white mb-5">
+        <h2 class="display-5 fw-bold">Why Choose Our System?</h2>
+        <p class="lead">Science-backed nutrition powered by machine learning</p>
+    </div>
+    
+    <div class="col-md-3 mb-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-database fa-3x text-primary mb-3"></i>
+                <h4>Real Datasets</h4>
+                <p class="text-muted">Based on authentic Kaggle nutrition datasets, not synthetic data</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-brain fa-3x text-primary mb-3"></i>
+                <h4>ML Powered</h4>
+                <p class="text-muted">Random Forest algorithms for accurate BMI & calorie predictions</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-utensils fa-3x text-primary mb-3"></i>
+                <h4>12 Diet Plans</h4>
+                <p class="text-muted">Veg, Non-Veg & Vegan options for every BMI category</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-4">
+        <div class="card h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-chart-line fa-3x text-primary mb-3"></i>
+                <h4>Track Progress</h4>
+                <p class="text-muted">Monitor your weight and diet journey over time</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Dataset Info -->
+<div class="row mt-5">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body p-4">
+                <h3 class="fw-bold mb-4">
+                    <i class="fas fa-database"></i> Kaggle Datasets Used
+                </h3>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="border-start border-5 border-primary ps-3">
+                            <h5 class="fw-semibold">BMI Dataset</h5>
+                            <p class="small text-muted mb-1">Predicting BMI with health attributes</p>
+                            <a href="https://www.kaggle.com/datasets/yasserh/bmidataset" target="_blank" class="small text-primary">
+                                <i class="fas fa-external-link-alt"></i> kaggle.com/datasets/yasserh/bmidataset
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="border-start border-5 border-success ps-3">
+                            <h5 class="fw-semibold">Obesity Levels Dataset</h5>
+                            <p class="small text-muted mb-1">Lifestyle habits analysis</p>
+                            <a href="https://www.kaggle.com/datasets/ankurbajaj9/obesity-levels" target="_blank" class="small text-success">
+                                <i class="fas fa-external-link-alt"></i> kaggle.com/datasets/ankurbajaj9/obesity-levels
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="border-start border-5 border-warning ps-3">
+                            <h5 class="fw-semibold">Food Nutrition Dataset</h5>
+                            <p class="small text-muted mb-1">Comprehensive nutrition data</p>
+                            <a href="https://www.kaggle.com/datasets/utsavdey1410/food-nutrition-dataset" target="_blank" class="small text-warning">
+                                <i class="fas fa-external-link-alt"></i> kaggle.com/datasets/utsavdey1410/food-nutrition-dataset
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="border-start border-5 border-danger ps-3">
+                            <h5 class="fw-semibold">Diet Recommendations</h5>
+                            <p class="small text-muted mb-1">AI-powered meal planning</p>
+                            <a href="https://www.kaggle.com/datasets/ziya07/diet-recommendations-dataset" target="_blank" class="small text-danger">
+                                <i class="fas fa-external-link-alt"></i> kaggle.com/datasets/ziya07/diet-recommendations-dataset
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

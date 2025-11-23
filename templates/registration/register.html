@@ -1,0 +1,93 @@
+<!-- register.html -->
+{% extends 'base.html' %}
+
+{% block title %}Register - Smart Diet System{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body p-5">
+                <div class="text-center mb-4">
+                    <i class="fas fa-user-plus fa-3x text-success mb-3"></i>
+                    <h2 class="fw-bold">Create Account</h2>
+                    <p class="text-muted">Join us and start your health journey</p>
+                </div>
+                
+                <form method="POST">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Username</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            {{ form.username }}
+                        </div>
+                        {% if form.username.errors %}
+                            <small class="text-danger">{{ form.username.errors }}</small>
+                        {% endif %}
+                        <small class="text-muted">Required. 150 characters or fewer.</small>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                            {{ form.password1 }}
+                        </div>
+                        {% if form.password1.errors %}
+                            <small class="text-danger">{{ form.password1.errors }}</small>
+                        {% endif %}
+                        <small class="text-muted">Must be at least 8 characters.</small>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">Confirm Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                            {{ form.password2 }}
+                        </div>
+                        {% if form.password2.errors %}
+                            <small class="text-danger">{{ form.password2.errors }}</small>
+                        {% endif %}
+                    </div>
+                    
+                    <button type="submit" class="btn btn-success w-100 btn-lg mb-3">
+                        <i class="fas fa-user-plus"></i> Create Account
+                    </button>
+                    
+                    <div class="text-center">
+                        <p class="mb-0">Already have an account? 
+                            <a href="{% url 'login' %}" class="text-decoration-none">Login here</a>
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Benefits Card -->
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5 class="fw-bold mb-3"><i class="fas fa-star text-warning"></i> Member Benefits:</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><i class="fas fa-check text-success"></i> Save unlimited diet plans</li>
+                    <li class="mb-2"><i class="fas fa-check text-success"></i> Track weight progress over time</li>
+                    <li class="mb-2"><i class="fas fa-check text-success"></i> View complete history</li>
+                    <li class="mb-2"><i class="fas fa-check text-success"></i> Get personalized recommendations</li>
+                    <li class="mb-2"><i class="fas fa-check text-success"></i> 100% Free forever!</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-control {
+        border-left: none;
+    }
+    .input-group-text {
+        background: white;
+        border-right: none;
+    }
+</style>
+{% endblock %}

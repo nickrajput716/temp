@@ -1,0 +1,34 @@
+<!-- recommendation_detail.html -->
+{% extends 'base.html' %}
+{% block title %}Diet Plan Detail{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-body">
+                <h5>Metrics</h5>
+                <p><strong>BMI:</strong> {{ recommendation.bmi }}</p>
+                <p><strong>Category:</strong> <span class="badge-category {{ recommendation.bmi_category|lower }}">{{ recommendation.bmi_category }}</span></p>
+                <p><strong>TDEE:</strong> {{ recommendation.tdee }} kcal</p>
+                <p><strong>Target:</strong> {{ recommendation.recommended_calories }} kcal</p>
+                <p><strong>Date:</strong> {{ recommendation.created_at|date:"M d, Y" }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-body">
+                <h4>{{ recommendation.diet_plan_title }}</h4>
+                <h5 class="mt-4">Meals:</h5>
+                {% for meal in recommendation.meals %}
+                    <div class="meal-card">{{ meal }}</div>
+                {% endfor %}
+                <h5 class="mt-4">Tips:</h5>
+                {% for tip in recommendation.tips %}
+                    <div class="tip-card">{{ tip }}</div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

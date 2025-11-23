@@ -1,0 +1,49 @@
+<!-- history.html -->
+{% extends 'base.html' %}
+{% block title %}History - Smart Diet System{% endblock %}
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <h3 class="mb-4"><i class="fas fa-history"></i> Your Diet Plan History</h3>
+        
+        {% if recommendations %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>BMI</th>
+                            <th>Category</th>
+                            <th>Diet</th>
+                            <th>Calories</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for rec in recommendations %}
+                        <tr>
+                            <td>{{ rec.created_at|date:"M d, Y h:i A" }}</td>
+                            <td>{{ rec.bmi }}</td>
+                            <td><span class="badge-category {{ rec.bmi_category|lower }}">{{ rec.bmi_category }}</span></td>
+                            <td><span class="diet-badge diet-{{ rec.diet_type }}">{{ rec.diet_type|title }}</span></td>
+                            <td>{{ rec.recommended_calories }} kcal</td>
+                            <td>
+                                <a href="{% url 'recommendation_detail' rec.pk %}" class="btn btn-sm btn-primary">
+                                    <i class="fas fa-eye"></i> View
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="text-center py-5">
+                <i class="fas fa-inbox fa-4x text-muted mb-3"></i>
+                <p class="text-muted">No history yet</p>
+                <a href="{% url 'calculate_diet' %}" class="btn btn-primary">Create First Plan</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
